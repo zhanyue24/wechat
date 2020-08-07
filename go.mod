@@ -1,4 +1,4 @@
-module github.com/zhanyue24
+module github.com/zhanyue24/wechat
 
 go 1.14
 

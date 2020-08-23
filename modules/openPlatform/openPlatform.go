@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/ddliu/go-httpclient"
-	"github.com/sirupsen/logrus"
 	"github.com/zhanyue24/wechat/config"
 )
 
@@ -14,22 +13,15 @@ type OpenPlatform struct {
 	Config config.OpenPlatformCfg
 }
 
-func New(cfg config.OpenPlatformCfg) *OpenPlatform {
-
-	logrus.WithField("data", cfg).Info("load config")
-
-	return &OpenPlatform{
-		Config: cfg,
-	}
-}
-
 type GetUserInfoReturn struct {
-	AccessToken  string `json:"access_token"`
-	ExpiresIn    string `json:"expires_in"`
-	RefreshToken string `json:"refresh_token"`
-	OpenId       string `json:"openid"`
-	Scope        string `json:"scope"`
-	Unionid      string `json:"unionid"`
+	OpenId     string `json:"openid"`
+	Nickname   string `json:"nickname"`
+	Sex        int    `json:"sex"`
+	Province   string `json:"province"`
+	City       string `json:"city"`
+	Country    string `json:"country"`
+	Headimgurl string `json:"headimgurl"`
+	Unionid    string `json:"unionid"`
 }
 
 // https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID
@@ -46,7 +38,6 @@ func (m *OpenPlatform) GetUserInfo(authInfo GetAccessTokenReturn) (ret GetUserIn
 	}
 
 	json.Unmarshal(result, &ret)
-	logrus.Info(result)
 
 	return
 }
@@ -57,7 +48,6 @@ type GetAccessTokenReturn struct {
 	RefreshToken string `json:"refresh_token"`
 	OpenId       string `json:"openid"`
 	Scope        string `json:"scope"`
-	Unionid      string `json:"unionid"`
 }
 
 func (m *OpenPlatform) GetAccessToken(code string) (ret GetAccessTokenReturn, err error) {
@@ -105,10 +95,10 @@ func (m *OpenPlatform) http(path string, params map[string]string) (ret []byte, 
 
 	if jsonData.ErrCode > 0 {
 		err = errors.New(fmt.Sprintf("[%d] %s", jsonData.ErrCode, jsonData.ErrMsg))
-		logrus.WithError(err).WithFields(logrus.Fields{
-			"url":    url,
-			"params": params,
-		}).Warning("return error")
+		//logrus.WithError(err).WithFields(logrus.Fields{
+		//	"url":    url,
+		//	"params": params,
+		//}).Warning("return error")
 		return
 	}
 

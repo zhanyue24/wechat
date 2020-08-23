@@ -6,3 +6,10 @@ type OpenPlatformCfg struct {
 	Token     string `json:"token"`
 	AesKey    string `json:"aes_key"`
 }
+
+type OfficialAccountCfg struct {
+	AppId  string `json:"app_id"`
+	Debug  bool   `json:"debug"`
+	Token  string `json:"token"`
+	AesKey string `json:"aes_key"`
+}

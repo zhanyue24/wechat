@@ -72,11 +72,17 @@ func (m *Official) GetAccessToken(code string) (ret GetAccessTokenReturn, err er
 	return
 }
 
-func (m *Official) GetAuthUrl(scope, state string) (u string, err error) {
+func (m *Official) GetAuthUrl(scope, state, redirect string) (u string, err error) {
 
-	redirect := url.QueryEscape(m.Config.Redirect)
+	redirectConf := m.Config.Redirect
 
-	u = fmt.Sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect", m.Config.AppId, redirect, scope, state)
+	if len(redirect) > 0 {
+		redirectConf = redirect
+	}
+
+	redirectConf = url.QueryEscape(redirectConf)
+
+	u = fmt.Sprintf("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect", m.Config.AppId, redirectConf, scope, state)
 
 	return
 }

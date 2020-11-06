@@ -48,6 +48,7 @@ type GetAccessTokenReturn struct {
 	RefreshToken string `json:"refresh_token"`
 	OpenId       string `json:"openid"`
 	Scope        string `json:"scope"`
+	UnionId      string `json:"unionid"`
 }
 
 func (m *OpenPlatform) GetAccessToken(code string) (ret GetAccessTokenReturn, err error) {
